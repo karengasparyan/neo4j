@@ -51,6 +51,7 @@ class NodeController {
     const { name, properties }: NodeInputDto = req.body;
     try {
       await NodeService.get(id);
+      
       const data = await NodeService.update(id, req.body);
 
       return res.status(200).json({
