@@ -8,8 +8,7 @@ import morgan from "morgan";
 import indexRouter from "../routes";
 import notFound from "../middlewares/notFound";
 import errorHandler from "../middlewares/errorHandler";
-
-const { PORT } = process.env;
+import config from "../config/config";
 
 const bootstrapServer = async (): Promise<void> => {
   const app: Express = express();
@@ -29,7 +28,10 @@ const bootstrapServer = async (): Promise<void> => {
 
   app.all("/*", (req, res) => res.sendFile(path.resolve("./web/index.html")));
 
-  app.listen(PORT, async () => console.info(`Express ready at http://localhost:${PORT}`))
+  app.listen(config.PORT, async () => {
+    console.info(`Express ready at http://localhost:${config.PORT}`);
+    console.info(`Express ready at http://localhost:${config.PORT}/docs`);
+  })
 };
 
 export default bootstrapServer;
