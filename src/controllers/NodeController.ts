@@ -51,7 +51,7 @@ class NodeController {
     const { name, properties }: NodeInputDto = req.body;
     try {
       await NodeService.get(id);
-      
+
       const data = await NodeService.update(id, req.body);
 
       return res.status(200).json({
@@ -89,7 +89,7 @@ class NodeController {
     const { id } = req.params;
     try {
       const data = await NodeService.get(id);
-      await NodeService.destroy(id);
+      await NodeService.remove(id);
 
       return res.status(200).json({
         message: DELETE_NODE,

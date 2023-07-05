@@ -1,7 +1,8 @@
 import neo4j, { Driver, Result, Session } from "neo4j-driver";
 import { CREATE_QUERY, UPDATE_QUERY, DESTROY_QUERY, GET_QUERY, GET_ALL_QUERY  } from "../helpers/Neo4jQueries";
 import { getNeo4jData } from "../helpers/utils";
-import {NodeDto} from "../Dtos/NodeDto";
+import { NodeDto } from "../Dtos/NodeDto";
+import config from '../config/config';
 
 class Neo4jService {
   private driver: Driver;
@@ -29,7 +30,7 @@ class Neo4jService {
     }
   };
 
-  public destroy = async (id: string): Promise<Result | undefined> => {
+  public remove = async (id: string): Promise<Result | undefined> => {
     try {
       return this.session.run(DESTROY_QUERY, { id }
       );
@@ -58,4 +59,4 @@ class Neo4jService {
 
 }
 
-export default new Neo4jService('bolt://localhost:7687', 'neo4j', '12345678');
+export default new Neo4jService(config.NEO4JURL, config.NEO4JUSER, config.NEO4JPASSWORD);

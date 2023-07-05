@@ -1,7 +1,6 @@
 import HttpError from "http-errors";
 import { nodeRepository } from "../options/Repositories";
 import { Nodes } from "../entities";
-import { DeleteResult } from "typeorm";
 import { NodeDto } from "../Dtos/NodeDto";
 import { NodeInputDto } from "../Dtos/NodeInputDto";
 import { NOT_FOUND } from "../helpers/Messages";
@@ -14,13 +13,16 @@ class NodeService {
     return nodeRepository.save(newNode);
   }
 
-  public async update(id: string, nodeData: NodeInputDto): Promise<Nodes> {
-    await nodeRepository.update(id, nodeData);
-    return nodeRepository.save({id, ...nodeData})
+  public async update(id: string, updateData: NodeInputDto): Promise<Nodes> {
+    const data = await this.get(id);
+    data.name = updateData.name;
+    data.properties = updateData.properties;
+    return nodeRepository.save(data);
   }
 
-  public async destroy(id: string): Promise<DeleteResult> {
-    return nodeRepository.delete(id);
+  public async remove(id: string): Promise<Nodes> {
+    const data = await this.get(id);
+    return nodeRepository.remove(data);
   }
 
   public async get(id: string): Promise<Nodes> {

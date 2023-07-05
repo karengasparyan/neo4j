@@ -1,12 +1,12 @@
 import {
   AfterInsert,
   AfterUpdate,
-  AfterRemove,
+  BeforeRemove,
   Column,
   Entity,
-  PrimaryGeneratedColumn, BeforeUpdate
+  PrimaryGeneratedColumn
 } from "typeorm";
-import { triggerCreate, triggerRemove, triggerUpdate } from "../helpers/Triggers";
+import Neo4jService from "../services/Neo4jService";
 
 @Entity()
 export default class Nodes {
@@ -24,18 +24,19 @@ export default class Nodes {
 
   @AfterInsert()
   afterInsert() {
-   return triggerCreate(this);
+    const { id, name, properties } = this;
+    return Neo4jService.create(id, name, properties);
   }
 
-  @BeforeUpdate()
+  @AfterUpdate()
   afterUpdate() {
-    console.log('aaaaaaaaaaaaaaaaaaaaaa')
-    return triggerUpdate(this);
+    const { id, name, properties } = this;
+    return Neo4jService.update(id, name, properties);
   }
 
-  @AfterRemove()
-  afterRemove() {
-    return triggerRemove(this.id);
+  @BeforeRemove()
+  beforeRemove() {
+    return Neo4jService.remove(this.id);
   }
 
 }
