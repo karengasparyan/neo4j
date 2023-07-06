@@ -122,11 +122,6 @@ paths:
       summary: Get all Nodes
       tags:
         - Nodes
-      parameters:
-        - name: id
-          in: path
-          description: Get Nodes
-          required: true
       responses:
         '200':
           description: Nodes list
