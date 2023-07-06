@@ -11,3 +11,5 @@ Steps to run project:
 7. Run `npm run migration:revert` command revert migration
 8. Run `npm run schema:sync` command migration for schema sync
 9. Run `docker-compose up` command run for docker
+## Swagger
+{hostname}/docs
