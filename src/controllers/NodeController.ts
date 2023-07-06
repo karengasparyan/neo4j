@@ -12,9 +12,9 @@ class NodeController {
 
   @ValidationController(NodeInputDto, "body")
   public async create(req: Request, res: Response, next: NextFunction) {
-    const id = uuId();
-    const { name, properties }: NodeInputDto = req.body;
     try {
+      const id = uuId();
+      const { name, properties }: NodeInputDto = req.body;
       const data = await NodeService.create({ id, name, properties });
 
       return res.status(200).json({
@@ -29,13 +29,13 @@ class NodeController {
   public async getAll(req: Request, res: Response, next: NextFunction) {
     try {
       const postgres = await NodeService.getAll();
-      const Neo4j = await Neo4jService.getAll();
+      const neo4j = await Neo4jService.getAll();
 
       return res.status(200).json({
         message: LIST_NODE,
         data: {
           postgres,
-          Neo4j
+          neo4j
         }
       });
 
@@ -47,11 +47,9 @@ class NodeController {
   @ValidationController(ParamsUUIDDto, "params")
   @ValidationController(NodeInputDto, "body")
   public async update(req: Request, res: Response, next: NextFunction) {
-    const { id } = req.params;
-    const { name, properties }: NodeInputDto = req.body;
     try {
+      const { id } = req.params;
       await NodeService.get(id);
-
       const data = await NodeService.update(id, req.body);
 
       return res.status(200).json({
@@ -69,13 +67,13 @@ class NodeController {
     try {
       const { id } = req.params;
       const postgres = await NodeService.get(id);
-      const Neo4j = await Neo4jService.get(id);
+      const neo4j = await Neo4jService.get(id);
 
       return res.status(200).json({
         message: DELETE_NODE,
         data: {
           postgres,
-          Neo4j
+          neo4j: neo4j && neo4j[0]
         }
       });
 
@@ -86,8 +84,8 @@ class NodeController {
 
   @ValidationController(ParamsUUIDDto, "params")
   public async destroy(req: Request, res: Response, next: NextFunction) {
-    const { id } = req.params;
     try {
+      const { id } = req.params;
       const data = await NodeService.get(id);
       await NodeService.remove(id);
 

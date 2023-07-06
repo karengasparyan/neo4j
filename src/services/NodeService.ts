@@ -32,7 +32,11 @@ class NodeService {
   }
 
   public async getAll(): Promise<Nodes[]> {
-    return nodeRepository.find({});
+    return nodeRepository.find({
+      order: {
+        name: "ASC"
+      }
+    });
   }
 }
 

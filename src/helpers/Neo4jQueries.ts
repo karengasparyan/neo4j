@@ -2,7 +2,7 @@ const CREATE_QUERY = 'CREATE (n: Nodes {id: $id, name: $name, properties: $prope
 const UPDATE_QUERY = 'MATCH (n: Nodes {id: $id}) SET n.name = $name, n.properties = $properties RETURN n';
 const DESTROY_QUERY = 'MATCH (n: Nodes {id: $id}) DELETE n';
 const GET_QUERY = 'MATCH (n: Nodes {id: $id}) RETURN n';
-const GET_ALL_QUERY = 'MATCH (n: Nodes) RETURN n';
+const GET_ALL_QUERY = 'MATCH (n: Nodes) RETURN n ORDER BY n.name';
 
 export {
     CREATE_QUERY,
