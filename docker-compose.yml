@@ -1,0 +1,35 @@
+version: "3"
+services:
+  express-app:
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    ports:
+      - "4000:4000"
+    depends_on:
+      - postgres
+      - neo4j
+    environment:
+      NODE_ENV: development
+      PORT: 4000
+      DBNAME: postgres
+      USER: postgres
+      PASSWORD: postgres
+      HOST: postgres
+      DBPORT: 5432
+      BASE_URL: 'http://localhost:4000'
+      NEO4JURL: 'bolt://neo4j:7687'
+      NEO4JUSER: neo4j
+      NEO4JPASSWORD: '12345678'
+  postgres:
+    image: postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: postgres
+  neo4j:
+    image: neo4j
+    environment:
+      NEO4J_AUTH: neo4j/12345678
+    ports:
+      - "7687:7687"
