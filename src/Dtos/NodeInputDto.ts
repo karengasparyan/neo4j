@@ -1,4 +1,4 @@
-import { IsString, Length, IsNotEmpty, IsObject, IsUUID } from "class-validator";
+import { IsString, Length, IsNotEmpty, IsObject } from "class-validator";
 
 export class NodeInputDto {
 
@@ -8,7 +8,6 @@ export class NodeInputDto {
   name: string;
 
   @IsNotEmpty()
-  @IsObject()
   properties: string;
 
 }
