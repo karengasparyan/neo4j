@@ -10,9 +10,9 @@ export function ValidationController<T extends object>(dtoClass: new () => T, ty
     descriptor.value = async function (req: Request, res: Response, next: NextFunction): Promise<any> {
       const dtoObject = plainToInstance(dtoClass, req[type]);
       const errors: ValidationError[] = await validate(dtoObject);
-      const err: string[] = [];
-      errors.forEach((e: ValidationError) => err.push(...Object.values(e?.constraints || {})))
-      if (err?.length) return res.status(422).json({ errors: err });
+      const errArray: string[] = [];
+      errors.forEach((e: ValidationError) => errArray.push(...Object.values(e?.constraints || {})))
+      if (errArray?.length) return res.status(422).json({ errors: errArray });
       req[type] = dtoObject;
       return originalMethod.call(this, req, res, next);
     };

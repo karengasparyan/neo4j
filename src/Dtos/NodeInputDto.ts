@@ -1,4 +1,6 @@
-import { IsString, Length, IsNotEmpty, IsObject } from "class-validator";
+import { IsString, Length, IsNotEmpty } from "class-validator";
+import { IsJson } from "../decorators/custom.validation.decorator";
+
 
 export class NodeInputDto {
 
@@ -8,6 +10,7 @@ export class NodeInputDto {
   name: string;
 
   @IsNotEmpty()
+  @IsJson({ message: "Please enter valid JSON" })
   properties: string;
 
 }
