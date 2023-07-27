@@ -4,12 +4,17 @@ import { Nodes } from "../entities";
 import { NodeDto } from "../Dtos/NodeDto";
 import { NodeInputDto } from "../Dtos/NodeInputDto";
 import { NOT_FOUND } from "../helpers/Messages";
+import Neo4jService, {TypeNeo4jService} from "./Neo4jService";
+import config from "../config/config";
 
 class NodeService {
-  constructor() {}
+  private Neo4jService: TypeNeo4jService;
+  constructor() {
+    this.Neo4jService = new Neo4jService(config.NEO4JURL, config.NEO4JUSER, config.NEO4JPASSWORD);
+  }
 
   public async create(nodeData: NodeDto): Promise<Nodes> {
-    const newNode = nodeRepository.create(nodeData);
+    const newNode: Nodes = nodeRepository.create(nodeData);
     return nodeRepository.save(newNode);
   }
 

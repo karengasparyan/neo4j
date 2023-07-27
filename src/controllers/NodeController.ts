@@ -4,11 +4,15 @@ import NodeService from "../services/NodeService";
 import { ValidationController } from "../decorators/validation.controller.decorator";
 import { NodeInputDto } from "../Dtos/NodeInputDto";
 import { ParamsUUIDDto } from "../Dtos/ParamsUUID.dto";
-import Neo4jService from "../services/Neo4jService";
+import Neo4jService, {TypeNeo4jService} from "../services/Neo4jService";
 import { CREATE_NODE, UPDATE_NODE, DELETE_NODE, LIST_NODE } from "../helpers/Messages"
+import config from "../config/config";
 
 class NodeController {
-  constructor() {}
+  private Neo4jService: TypeNeo4jService;
+  constructor() {
+    this.Neo4jService = new Neo4jService(config.NEO4JURL, config.NEO4JUSER, config.NEO4JPASSWORD);
+  }
 
   @ValidationController(NodeInputDto, "body")
   public async create(req: Request, res: Response, next: NextFunction) {
@@ -29,7 +33,7 @@ class NodeController {
   public async getAll(req: Request, res: Response, next: NextFunction) {
     try {
       const postgres = await NodeService.getAll();
-      const neo4j = await Neo4jService.getAll();
+      const neo4j = await this.Neo4jService.getAll();
 
       return res.status(200).json({
         message: LIST_NODE,
@@ -67,7 +71,7 @@ class NodeController {
     try {
       const { id } = req.params;
       const postgres = await NodeService.get(id);
-      const neo4j = await Neo4jService.get(id);
+      const neo4j = await this.Neo4jService.get(id);
 
       return res.status(200).json({
         message: DELETE_NODE,

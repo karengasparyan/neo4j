@@ -3,11 +3,15 @@ const UPDATE_QUERY = 'MATCH (n: Nodes {id: $id}) SET n.name = $name, n.propertie
 const DESTROY_QUERY = 'MATCH (n: Nodes {id: $id}) DELETE n';
 const GET_QUERY = 'MATCH (n: Nodes {id: $id}) RETURN n';
 const GET_ALL_QUERY = 'MATCH (n: Nodes) RETURN n ORDER BY n.name';
+const IF_HAVE_DATABASE = 'SHOW DATABASES WHERE name = $dbName';
+const CREATE_DATABASE = 'CREATE DATABASE $dbName';
 
 export {
     CREATE_QUERY,
     UPDATE_QUERY,
     DESTROY_QUERY,
     GET_QUERY,
-    GET_ALL_QUERY
+    GET_ALL_QUERY,
+    IF_HAVE_DATABASE,
+    CREATE_DATABASE
 }

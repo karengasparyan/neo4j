@@ -25,7 +25,8 @@
   "exclude": [
     "node_modules",
     "dist",
-    "coverage"
+    "coverage",
+    "migrations"
   ],
   "include": [
     "src"

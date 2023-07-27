@@ -6,10 +6,16 @@ import {
   Entity,
   PrimaryGeneratedColumn
 } from "typeorm";
-import Neo4jService from "../services/Neo4jService";
+import Neo4jService, { TypeNeo4jService } from "../services/Neo4jService";
+import config from "../config/config";
 
 @Entity()
 export default class Nodes {
+  private static Neo4jService: TypeNeo4jService;
+  constructor() {
+    Nodes.Neo4jService = new Neo4jService(config.NEO4JURL, config.NEO4JUSER, config.NEO4JPASSWORD);
+  }
+
   @PrimaryGeneratedColumn("uuid")
   id: string;
 
@@ -25,18 +31,18 @@ export default class Nodes {
   @AfterInsert()
   afterInsert() {
     const { id, name, properties } = this;
-    return Neo4jService.create(id, name, properties);
+    return Nodes.Neo4jService.create(id, name, properties);
   }
 
   @AfterUpdate()
   afterUpdate() {
     const { id, name, properties } = this;
-    return Neo4jService.update(id, name, properties);
+    return Nodes.Neo4jService.update(id, name, properties);
   }
 
   @BeforeRemove()
   beforeRemove() {
-    return Neo4jService.remove(this.id);
+    return Nodes.Neo4jService.remove(this.id);
   }
 
 }

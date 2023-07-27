@@ -1,21 +1,19 @@
-import neo4j, { Driver, Result, Session } from "neo4j-driver";
-import { CREATE_QUERY, UPDATE_QUERY, DESTROY_QUERY, GET_QUERY, GET_ALL_QUERY  } from "../helpers/Neo4jQueries";
-import { getNeo4jData } from "../helpers/utils";
+import neo4j, {Driver, Result, Session} from "neo4j-driver";
+import { CREATE_QUERY, UPDATE_QUERY, DESTROY_QUERY, GET_QUERY, GET_ALL_QUERY, IF_HAVE_DATABASE, CREATE_DATABASE } from "../helpers/Neo4jQueries";
+import { dbName, getNeo4jData } from "../helpers/utils";
 import { NodeDto } from "../Dtos/NodeDto";
-import config from '../config/config';
 
-class Neo4jService {
+export default class Neo4jService {
   private driver: Driver;
   private session: Session;
-  constructor(private url: string,  private username: string, private password: string ) {
-    this.driver = neo4j.driver(url, neo4j.auth.basic(username, password));
-    this.session = this.driver.session();
+  constructor(private url: string,  private username: string, private password: string) {
+    this.driver = neo4j.driver(url, neo4j.auth.basic(username, password) );
+    this.session = this.driver.session({ database: dbName });
   }
 
   public create = async (id: string, name: string, properties: string):  Promise<Result | undefined> => {
     try {
-      return this.session.run(CREATE_QUERY, { id, name, properties: JSON.stringify(properties) }
-      );
+      return this.session.run(CREATE_QUERY, { id, name, properties: JSON.stringify(properties) });
     } catch (error) {
       console.error(error);
     }
@@ -57,6 +55,18 @@ class Neo4jService {
     }
   };
 
+  public checkDatabase = async (dbName: string) => {
+    try {
+      const result = await this.session.run(IF_HAVE_DATABASE, { dbName });
+      if(!result.records.length) {
+        await this.session.run(CREATE_DATABASE, { dbName });
+      }
+
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
 }
 
-export default new Neo4jService(config.NEO4JURL, config.NEO4JUSER, config.NEO4JPASSWORD);
+export type TypeNeo4jService = InstanceType<typeof Neo4jService>;
