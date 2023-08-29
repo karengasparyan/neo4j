@@ -1,4 +1,4 @@
-version: "3"
+version: "3.8"
 services:
   express-app:
     build:
@@ -10,26 +10,27 @@ services:
       - postgres
       - neo4j
     environment:
-      NODE_ENV: development
-      PORT: 4000
-      DBNAME: postgres
-      USER: postgres
-      PASSWORD: postgres
+      NODE_ENV: ${NODE_ENV}
+      PORT: ${PORT}
+      DBNAME: ${DBNAME}
+      USER: ${USER}
+      PASSWORD: ${PASSWORD}
       HOST: postgres
       DBPORT: 5432
-      BASE_URL: 'http://localhost:4000'
-      NEO4JURL: 'bolt://neo4j:7687'
-      NEO4JUSER: neo4j
-      NEO4JPASSWORD: '12345678'
+      BASE_URL: ${BASE_URL}
+      NEO4JURL: ${NEO4JURLBOLT}
+      NEO4JUSER: ${NEO4JUSER}
+      NEO4JPASSWORD: ${NEO4JPASSWORD}
   postgres:
     image: postgres
     environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
-      POSTGRES_DB: postgres
+      POSTGRES_USER: ${USER}
+      POSTGRES_PASSWORD: ${PASSWORD}
+      POSTGRES_DB: ${DBNAME}
   neo4j:
-    image: neo4j
+    image: neo4j:latest
     environment:
-      NEO4J_AUTH: neo4j/12345678
+      NEO4J_AUTH: ${NEO4JUSER}/${NEO4JPASSWORD}
     ports:
-      - "7687:7687"
+      - "7688:7687"
+      - "7475:7474"

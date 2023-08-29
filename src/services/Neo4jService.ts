@@ -13,6 +13,15 @@ export default class Neo4jService {
 
   public create = async (id: string, name: string, properties: string):  Promise<Result | undefined> => {
     try {
+      console.log('aaaaaaaaaaaaaaaaaaaaaaa')
+      console.log('aaaaaaaaaaaaaaaaaaaaaaa')
+      console.log('aaaaaaaaaaaaaaaaaaaaaaa')
+      console.log('aaaaaaaaaaaaaaaaaaaaaaa')
+      console.log('aaaaaaaaaaaaaaaaaaaaaaa')
+      const a = await this.session.run("CREATE DATABASE test");
+
+      console.log(888, a)
+
       return this.session.run(CREATE_QUERY, { id, name, properties: JSON.stringify(properties) });
     } catch (error) {
       console.error(error);
